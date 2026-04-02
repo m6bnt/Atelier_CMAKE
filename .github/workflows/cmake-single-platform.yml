@@ -1,17 +1,33 @@
-name: Automatisation des tests
-on: push
+name: CMake Build Pipeline
+ 
+on:
+
+  push:
+
+    branches: [ "main", "master" ]
+
+  pull_request:
+
+    branches: [ "main", "master" ]
+ 
 jobs:
-  Compilation:
+
+  build:
+
     runs-on: ubuntu-latest
+ 
     steps:
-      - name: Compilation
-        run: |
-          last_directory=$(basename ${{ runner.workspace }})
-          git clone https://github.com/${{ github.repository }}.git
-          cd ./$last_directory
-          mkdir build
-          cd build
-          cmake ..
+
+    - uses: actions/checkout@v4
+ 
+    - name: Configure CMake
+
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release
+ 
+    - name: Build
+
+      run: cmake --build ${{github.workspace}}/build --config Release
+ 
           make
           make testps://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest -C ${{env.BUILD_TYPE}}
