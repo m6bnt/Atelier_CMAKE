@@ -1,0 +1,17 @@
+name: CMake Build Pipeline
+
+on: [push, pull_request] # Se déclenche à chaque push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Configure CMake
+      run: cmake -S . -B build
+
+    - name: Build project
+      run: cmake --build build
